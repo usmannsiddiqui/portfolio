@@ -2,7 +2,11 @@
   "permissions": {
     "allow": [
       "Bash(claude:*)",
-      "Bash(npx shadcn@latest:*)"
+      "Bash(npx shadcn@latest:*)",
+      "Bash(for dir:*)",
+      "Bash(do echo:*)",
+      "Read(//c/Users/usman/dev/projects/personal/portfolio/**)",
+      "Bash(done)"
     ]
   }
 }
