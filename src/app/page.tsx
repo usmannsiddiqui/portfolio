@@ -1,6 +1,7 @@
 import Navbar from "@/components/navbar";
 import Hero from "@/components/hero";
 import About from "@/components/about";
+import StarWarsCrawl from "@/components/star-wars-crawl";
 import Experience from "@/components/experience";
 import Work from "@/components/work";
 import Skills from "@/components/skills";
@@ -26,6 +27,10 @@ export default function Home() {
         {/* Sections blur-fade in as they scroll into view */}
         <BlurFade>
           <About />
+        </BlurFade>
+
+        <BlurFade>
+          <StarWarsCrawl />
         </BlurFade>
 
         <BlurFade>
