@@ -23,7 +23,10 @@ export default function Hero() {
 
           {/* Name */}
           <div>
-            <h1 className="font-bold text-5xl md:text-6xl lg:text-[4.25rem] leading-[1.08] tracking-tight text-foreground">
+            <h1
+              className="font-black text-4xl md:text-5xl lg:text-[3.5rem] leading-[1.12] tracking-wide text-foreground uppercase"
+              style={{ fontFamily: "var(--font-orbitron)" }}
+            >
               {personal.name}
             </h1>
             <p className="mt-3 text-base md:text-lg font-medium text-amber tracking-wide">
@@ -68,13 +71,13 @@ export default function Hero() {
 
         {/* ── Photo ── */}
         <div className="flex justify-center md:justify-end order-1 md:order-2">
-          <div className="w-52 h-52 md:w-60 md:h-60 lg:w-64 lg:h-64 rounded-xl overflow-hidden ring-1 ring-border">
+          <div className="w-52 h-52 md:w-60 md:h-60 lg:w-64 lg:h-64 rounded-full overflow-hidden shadow-xl shadow-black/80">
             <Image
               src={personal.photo}
               alt={personal.name}
               width={256}
               height={256}
-              className="object-cover w-full h-full"
+              className="object-cover w-full h-full grayscale"
               priority
             />
           </div>
