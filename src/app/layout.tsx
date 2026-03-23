@@ -1,20 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { DM_Sans } from "next/font/google";
+import { SpringCursor } from "@/components/ui/spring-cursor";
+import { ScrollProgress } from "@/components/ui/scroll-progress";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const dmSans = DM_Sans({
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: "--font-dm-sans",
 });
 
 export const metadata: Metadata = {
   title: "Muhammad Usman Siddiqui",
-  description: "AI Developer · Software Engineer · Technology Consultant",
+  description: "AI, Automation, and Technology Consultant · Penn State CS",
 };
 
 export default function RootLayout({
@@ -24,9 +21,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${dmSans.variable} font-sans antialiased`}>
+        <ScrollProgress />
+        <SpringCursor />
         {children}
       </body>
     </html>

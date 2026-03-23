@@ -6,7 +6,20 @@
       "Bash(for dir:*)",
       "Bash(do echo:*)",
       "Read(//c/Users/usman/dev/projects/personal/portfolio/**)",
-      "Bash(done)"
+      "Bash(done)",
+      "WebFetch(domain:api.github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(cd \"C:/Users/usman/dev/projects/personal/portfolio\" && python \"C:/Users/usman/.claude/skills/ui-ux-pro-max/scripts/search.py\" \"AI consultant technology portfolio dark mode premium elegant\" --design-system -p \"Usman Portfolio\" -f markdown 2>&1)",
+      "Bash(cd \"C:/Users/usman/dev/projects/personal/portfolio\" && python \"C:/Users/usman/.claude/skills/ui-ux-pro-max/scripts/search.py\" \"glassmorphism dark minimal cinematic\" --domain style -n 3 2>&1)",
+      "mcp__magic__21st_magic_component_inspiration",
+      "Bash(cd \"C:/Users/usman/dev/projects/personal/portfolio\" && npm install framer-motion 2>&1 | tail -5)",
+      "Bash(cd \"C:/Users/usman/dev/projects/personal/portfolio\" && node -e \"require\\('framer-motion'\\)\" 2>&1 | head -3 || echo \"installed\")",
+      "Bash(cd \"C:/Users/usman/dev/projects/personal/portfolio\" && npx tsc --noEmit 2>&1)",
+      "Bash(cd \"C:/Users/usman/dev/projects/personal/portfolio\" && npm run build 2>&1)",
+      "Bash(cd \"C:/Users/usman/dev/projects/personal/portfolio\" && npm run build 2>&1 | tail -15)",
+      "Bash(cd \"C:/Users/usman/dev/projects/personal/portfolio\" && npx tsc --noEmit 2>&1 && echo \"✓ types clean\")",
+      "Bash(cd \"C:/Users/usman/dev/projects/personal/portfolio\" && npm run build 2>&1 | tail -12)",
+      "Bash(cd \"C:/Users/usman/dev/projects/personal/portfolio\" && npm run build 2>&1 | tail -10)"
     ]
   }
 }
