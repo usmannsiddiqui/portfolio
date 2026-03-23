@@ -160,10 +160,65 @@
   border-radius: var(--radius-lg);
 }
 
+/* ─── STAR WARS EASTER EGG ─── */
+
+/*
+  Phase 1 (~4 s): "A long time ago…" fades in, holds, fades fully out.
+  Phase 2 (delay 4.5 s): Crawl begins. Text is hidden below the container
+  during the delay (animation-fill-mode: backwards keeps it at the 0%
+  keyframe = translateY(550px), which is below the 460px-tall viewport).
+  7% keyframe hold = ~4 s invisible pause at bottom before each loop.
+*/
+
+@keyframes sw-intro {
+  0%   { opacity: 0; }
+  18%  { opacity: 1; }
+  65%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes sw-crawl {
+  /* Start and hold completely below the overflow boundary */
+  0%   { transform: rotateX(25deg) translateY(550px); }
+  7%   { transform: rotateX(25deg) translateY(550px); }
+  /* Scroll all text past the top horizon */
+  100% { transform: rotateX(25deg) translateY(-2800px); }
+}
+
+.sw-intro-text {
+  animation: sw-intro 4s ease-in-out both;
+}
+
+/* backwards = stay at 0% keyframe during 4.5 s delay (hidden below container) */
+.sw-crawl-text {
+  animation: sw-crawl 72s linear infinite backwards;
+  animation-delay: 4.5s;
+}
+
+/* Top fade = text recedes into horizon. Bottom fade = text materialises from nothing. */
+.sw-crawl-viewport {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 22%,
+    black 58%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 22%,
+    black 58%,
+    transparent 100%
+  );
+}
+
 /* ─── REDUCED MOTION ─── */
 @media (prefers-reduced-motion: reduce) {
   .animate-pulse-dot,
-  .animate-fade-up {
+  .animate-fade-up,
+  .sw-intro-text,
+  .sw-crawl-text {
     animation: none;
   }
 }
