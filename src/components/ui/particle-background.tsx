@@ -5,23 +5,34 @@ import { useEffect, useRef } from "react";
 type Star = {
   x: number;
   y: number;
-  r: number;       // radius — tiny
+  r: number;
   speed: number;
   opacity: number;
+  minOpacity: number;
   maxOpacity: number;
-  rising: boolean; // fading in vs out
+  rising: boolean;
+  glow: boolean; // larger stars get a soft bloom
 };
 
 function makeStar(w: number, h: number): Star {
-  const maxOpacity = Math.random() * 0.25 + 0.05;
+  const isBright = Math.random() < 0.15; // 15% are brighter accent stars
+  const r = isBright
+    ? Math.random() * 1.2 + 1.2   // 1.2–2.4 px
+    : Math.random() * 1.0 + 0.6;  // 0.6–1.6 px
+  const maxOpacity = isBright
+    ? Math.random() * 0.15 + 0.45 // 0.45–0.60
+    : Math.random() * 0.15 + 0.25; // 0.25–0.40
+  const minOpacity = maxOpacity * 0.45; // never fades below 45% of its peak
   return {
     x: Math.random() * w,
     y: Math.random() * h,
-    r: Math.random() * 0.7 + 0.2,           // 0.2–0.9 px radius
-    speed: Math.random() * 0.06 + 0.02,     // very slow drift upward
-    opacity: 0,
+    r,
+    speed: Math.random() * 0.06 + 0.02,
+    opacity: minOpacity + Math.random() * (maxOpacity - minOpacity),
+    minOpacity,
     maxOpacity,
-    rising: true,
+    rising: Math.random() > 0.5,
+    glow: isBright,
   };
 }
 
@@ -41,8 +52,8 @@ export function ParticleBackground({ className }: { className?: string }) {
     };
     sync();
 
-    // ~1 star per 9 000 px² — sparse enough to read as "deep space"
-    const count = () => Math.max(50, Math.floor((canvas.width * canvas.height) / 9000));
+    // ~1 star per 4 500 px²
+    const count = () => Math.max(120, Math.floor((canvas.width * canvas.height) / 4500));
 
     let stars: Star[] = [];
     let raf = 0;
@@ -51,45 +62,48 @@ export function ParticleBackground({ className }: { className?: string }) {
       stars = Array.from({ length: count() }, () =>
         makeStar(canvas.width, canvas.height)
       );
-      // Stagger initial opacities so the field doesn't all appear at once
-      stars.forEach((s) => {
-        s.opacity = Math.random() * s.maxOpacity;
-        s.rising = Math.random() > 0.5;
-      });
     };
 
-    const FADE_SPEED = 0.001;
+    const FADE_SPEED = 0.003;
 
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       for (const s of stars) {
-        // Drift upward
+        // Drift upward, wrap at top
         s.y -= s.speed;
         if (s.y + s.r < 0) {
-          // Wrap to bottom
           s.y = canvas.height + s.r;
           s.x = Math.random() * canvas.width;
-          s.opacity = 0;
+          s.opacity = s.minOpacity;
           s.rising = true;
         }
 
-        // Twinkle — fade in/out between 0 and maxOpacity
+        // Twinkle — pulse between minOpacity and maxOpacity
         if (s.rising) {
           s.opacity += FADE_SPEED;
           if (s.opacity >= s.maxOpacity) { s.opacity = s.maxOpacity; s.rising = false; }
         } else {
           s.opacity -= FADE_SPEED;
-          if (s.opacity <= 0) { s.opacity = 0; s.rising = true; }
+          if (s.opacity <= s.minOpacity) { s.opacity = s.minOpacity; s.rising = true; }
         }
 
-        // Draw as a crisp circle (real star dot)
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 252, 245, ${s.opacity})`;
+
+        if (s.glow) {
+          // Soft bloom on accent stars
+          ctx.shadowColor = "rgba(255, 255, 255, 0.8)";
+          ctx.shadowBlur = s.r * 4;
+        } else {
+          ctx.shadowBlur = 0;
+        }
+
+        ctx.fillStyle = `rgba(255, 255, 255, ${s.opacity})`;
         ctx.fill();
       }
 
+      ctx.shadowBlur = 0; // reset so it doesn't leak
       raf = requestAnimationFrame(draw);
     };
 
