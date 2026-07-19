@@ -15,7 +15,7 @@ generous whitespace, playful copy.
 
 - **Direction:** blend — dark base stays; reference supplies typography, scale, and tone.
 - **Structure:** single page, existing section order unchanged.
-- **Palette:** existing dark neutrals + existing amber accent `oklch(0.769 0.188 70.08)`.
+- **Palette:** existing dark neutrals + existing amber accent `oklch(0.78 0.13 72)`.
   No new colors.
 - **Adopted elements:** pixel display font, huge section titles, playful microcopy/nav.
 - **Rejected elements:** photo grid (no photos), multi-page structure, light palette.
@@ -56,7 +56,7 @@ generous whitespace, playful copy.
 
 ## 4. Playful touches
 
-- Nav labels lowercase and casual: `home · about · work · skills · say hello!`.
+- Nav labels lowercase and casual: `about · experience · work · skills · say hello!`.
 - Microcopy loosened across sections (drafted during implementation, user can veto
   per-line).
 - Star Wars crawl stays as-is — it already fits the arcade theme and serves as the
