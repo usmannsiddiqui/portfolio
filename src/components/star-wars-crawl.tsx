@@ -71,7 +71,36 @@ export default function StarWarsCrawl() {
               onMouseEnter={() => setPaused(true)}
               onMouseLeave={() => setPaused(false)}
             >
-              {/* Phase 1 — "A long time ago…" (fades in, holds ~2.5 s, fades out) */}
+              {/* Phase 0 — Spider-Man (2002) fake-out */}
+              <div
+                className="sw-spidey-text absolute inset-0 flex items-center justify-center pointer-events-none"
+                style={{ zIndex: 10 }}
+              >
+                <p
+                  className="italic text-center select-none px-8"
+                  style={{
+                    color: "#c0c4cc",
+                    fontFamily: "Georgia, 'Times New Roman', serif",
+                    fontSize: "1.05rem",
+                    lineHeight: 1.7,
+                    maxWidth: "34ch",
+                  }}
+                >
+                  &ldquo;Who am I? You sure you want to know?&rdquo;
+                </p>
+              </div>
+
+              {/* Phase 0.5 — wrong universe! */}
+              <div
+                className="sw-gag-text absolute inset-0 flex items-center justify-center pointer-events-none"
+                style={{ zIndex: 10 }}
+              >
+                <p className="font-pixel text-xs md:text-sm text-amber text-center select-none px-8 leading-relaxed">
+                  oop no! wrong universe
+                </p>
+              </div>
+
+              {/* Phase 1 — "A long time ago…" (fades in, holds, fades out) */}
               <div
                 className="sw-intro-text absolute inset-0 flex items-center justify-center pointer-events-none"
                 style={{ zIndex: 10 }}
