@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const CRAWL_TEXT = {
   episode: "EPISODE IV",
@@ -16,6 +16,28 @@ const CRAWL_TEXT = {
 
 export default function StarWarsCrawl() {
   const [paused, setPaused] = useState(false);
+  // The whole sequence stays paused (delays included) until the terminal
+  // scrolls into view, so nobody misses the wrong-universe fake-out.
+  const [started, setStarted] = useState(false);
+  const viewportRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = viewportRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setStarted(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.35 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  const introPlayState = { animationPlayState: started ? "running" : "paused" } as const;
 
   return (
     <section className="py-24 border-t border-border/50">
@@ -61,6 +83,7 @@ export default function StarWarsCrawl() {
               The mask-image fades text in from the bottom and out into the top horizon.
             */}
             <div
+              ref={viewportRef}
               className="sw-crawl-viewport relative overflow-hidden"
               style={{
                 height: "460px",
@@ -71,10 +94,40 @@ export default function StarWarsCrawl() {
               onMouseEnter={() => setPaused(true)}
               onMouseLeave={() => setPaused(false)}
             >
-              {/* Phase 1 — "A long time ago…" (fades in, holds ~2.5 s, fades out) */}
+              {/* Phase 0 — Spider-Man (2002) fake-out */}
+              <div
+                className="sw-spidey-text absolute inset-0 flex items-center justify-center pointer-events-none"
+                style={{ zIndex: 10, ...introPlayState }}
+              >
+                <p
+                  className="italic text-center select-none px-8"
+                  style={{
+                    color: "#c0c4cc",
+                    fontFamily: "Georgia, 'Times New Roman', serif",
+                    fontSize: "1.05rem",
+                    lineHeight: 1.7,
+                    maxWidth: "34ch",
+                  }}
+                >
+                  &ldquo;Who am I? You sure you want to know? My story is not
+                  for the faint of heart.&rdquo;
+                </p>
+              </div>
+
+              {/* Phase 0.5 — wrong universe! */}
+              <div
+                className="sw-gag-text absolute inset-0 flex items-center justify-center pointer-events-none"
+                style={{ zIndex: 10, ...introPlayState }}
+              >
+                <p className="font-pixel text-xs md:text-sm text-amber text-center select-none px-8 leading-relaxed">
+                  oop no! wrong universe
+                </p>
+              </div>
+
+              {/* Phase 1 — "A long time ago…" (fades in, holds, fades out) */}
               <div
                 className="sw-intro-text absolute inset-0 flex items-center justify-center pointer-events-none"
-                style={{ zIndex: 10 }}
+                style={{ zIndex: 10, ...introPlayState }}
               >
                 <p
                   className="text-sm tracking-[0.35em] text-center select-none"
@@ -99,7 +152,7 @@ export default function StarWarsCrawl() {
                 style={{
                   top: 0,
                   transformOrigin: "50% bottom",
-                  animationPlayState: paused ? "paused" : "running",
+                  animationPlayState: !started || paused ? "paused" : "running",
                 }}
               >
                 <p

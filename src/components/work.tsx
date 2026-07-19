@@ -1,5 +1,6 @@
 import { Bot, Database } from "lucide-react";
 import { work } from "@/data/portfolio-data";
+import { SectionHeading } from "@/components/ui/section-heading";
 
 const CARD_META: Record<string, { icon: React.ReactNode; featured: boolean }> = {
   "AI Guidance and Enablement at Penn State": {
@@ -14,16 +15,10 @@ const CARD_META: Record<string, { icon: React.ReactNode; featured: boolean }> = 
 
 export default function Work() {
   return (
-    <section id="work" className="py-24 border-t border-border/50">
-      <div className="grid grid-cols-1 md:grid-cols-[180px_1fr] gap-8 lg:gap-16">
+    <section id="work" className="py-24">
+      <SectionHeading>Work</SectionHeading>
 
-        {/* Sticky label */}
-        <div>
-          <h2 className="text-xs font-medium tracking-[0.2em] uppercase text-amber md:sticky md:top-20">
-            Selected Work
-          </h2>
-        </div>
-
+      <div className="mt-12">
         {/* Cards — clean vertical stack */}
         <div className="flex flex-col gap-4">
           {work.map((entry) => {

@@ -12,11 +12,11 @@ import { Button } from "@/components/ui/button";
 import { personal } from "@/data/portfolio-data";
 
 const NAV_LINKS = [
-  { label: "About", href: "#about" },
-  { label: "Experience", href: "#experience" },
-  { label: "Work", href: "#work" },
-  { label: "Skills", href: "#skills" },
-  { label: "Contact", href: "#contact" },
+  { label: "about", href: "#about" },
+  { label: "experience", href: "#experience" },
+  { label: "work", href: "#work" },
+  { label: "skills", href: "#skills" },
+  { label: "say hello!", href: "#contact" },
 ];
 
 export default function Navbar() {
@@ -43,9 +43,10 @@ export default function Navbar() {
         {/* Logo */}
         <a
           href="#"
-          className="text-sm font-semibold tracking-tight text-foreground hover:text-foreground/70 transition-colors duration-150"
+          aria-label={personal.name}
+          className="font-pixel text-xs text-amber hover:text-foreground transition-colors duration-150"
         >
-          {personal.name}
+          MUS
         </a>
 
         {/* Desktop links */}
@@ -67,7 +68,7 @@ export default function Navbar() {
               rel="noopener noreferrer"
               className="px-3 py-1.5 text-sm font-medium text-amber border border-amber/30 rounded-md hover:border-amber/60 hover:bg-amber/5 transition-colors duration-150"
             >
-              Resume
+              resume
             </a>
           </li>
         </ul>
@@ -102,7 +103,7 @@ export default function Navbar() {
                     onClick={() => setOpen(false)}
                     className="block px-3 py-2 text-sm font-medium text-amber rounded-md hover:bg-amber/5 transition-colors duration-150"
                   >
-                    Resume ↗
+                    resume ↗
                   </a>
                 </li>
               </ul>

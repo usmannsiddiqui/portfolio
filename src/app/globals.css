@@ -10,6 +10,8 @@
   /* Single font family — DM Sans does everything */
   --font-sans: var(--font-dm-sans);
   --font-display: var(--font-dm-sans);
+  /* Retro pixel display font — small sizes only (≤ text-3xl) */
+  --font-pixel: var(--font-press-start);
   /* Single accent color — amber, used sparingly */
   --color-amber: oklch(0.78 0.13 72);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -127,25 +129,17 @@
   }
   html {
     scroll-behavior: smooth;
+    /* .bleed elements span 100vw; clip the ~15px scrollbar overshoot */
+    overflow-x: clip;
   }
   body {
     @apply bg-background text-foreground;
   }
 }
 
-/* ─── SINGLE ANIMATION — pulsing status dot ─── */
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50%       { opacity: 0.35; transform: scale(0.8); }
-}
-
 @keyframes fade-up {
   from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
-}
-
-.animate-pulse-dot {
-  animation: pulse-dot 2.4s ease-in-out infinite;
 }
 
 .animate-fade-up {
@@ -160,14 +154,43 @@
   border-radius: var(--radius-lg);
 }
 
+/* ─── RETRO ARCADE UTILITIES ─── */
+
+/* Full-viewport-width breakout for huge section titles inside max-w-5xl */
+.bleed {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+}
+
+/* Terminal-style blinking block cursor */
+@keyframes blink {
+  0%, 49%  { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.animate-blink {
+  animation: blink 1.1s step-end infinite;
+}
+
 /* ─── STAR WARS EASTER EGG ─── */
 
 /*
-  Phase 1 (~4 s): "A long time ago…" fades in, holds, fades fully out.
-  Phase 2 (delay 4.5 s): Crawl begins. Text is hidden below the container
-  during the delay (animation-fill-mode: backwards keeps it at the 0%
-  keyframe = translateY(550px), which is below the 460px-tall viewport).
-  7% keyframe hold = ~4 s invisible pause at bottom before each loop.
+  The whole sequence is scroll-gated: every layer starts with
+  animation-play-state: paused (set inline by the component) and only runs
+  once the viewport scrolls into view — pausing freezes delays too, so the
+  clock starts at first sight.
+
+  Phase 0 (0–6 s): wrong-universe fake-out — Spider-Man opening line
+  fades in, holds, fades out.
+  Phase 0.5 (6–9 s): "oop no! wrong universe" gag, pixel font.
+  Phase 1 (9–13 s): "A long time ago…" fades in, holds, fades fully out.
+  Phase 2 (delay 11 s): Crawl begins. Text is parked at translateY(700px),
+  fully below the masked viewport ("backwards" fill holds the 0% keyframe
+  during the delay). The climb starts under the Phase 1 fade and the text
+  enters view ~1 s after Phase 1 is gone. No hold keyframe: the climb from
+  the parking spot is the natural pause between loops.
+  All intro phases share the sw-intro keyframes and play once ("both");
+  only the crawl loops.
 */
 
 @keyframes sw-intro {
@@ -178,21 +201,37 @@
 }
 
 @keyframes sw-crawl {
-  /* Start and hold completely below the overflow boundary */
-  0%   { transform: rotateX(25deg) translateY(550px); }
-  7%   { transform: rotateX(25deg) translateY(550px); }
+  /* Park fully below the overflow boundary — with the 25° tilt +
+     perspective, anything under ~700px still peeks into the masked
+     viewport (550 and 620 both ghosted "EPISODE IV" during the intro). */
+  0%   { transform: rotateX(25deg) translateY(700px); }
   /* Scroll all text past the top horizon */
   100% { transform: rotateX(25deg) translateY(-2800px); }
 }
 
-.sw-intro-text {
-  animation: sw-intro 4s ease-in-out both;
+/* Phase 0 — Spider-Man fake-out */
+.sw-spidey-text {
+  animation: sw-intro 6s ease-in-out both;
 }
 
-/* backwards = stay at 0% keyframe during 4.5 s delay (hidden below container) */
+/* Phase 0.5 — wrong-universe gag ("both" holds opacity 0 during the delay) */
+.sw-gag-text {
+  animation: sw-intro 3s ease-in-out both;
+  animation-delay: 6s;
+}
+
+/* Phase 1 — the proper Star Wars opener */
+.sw-intro-text {
+  animation: sw-intro 4s ease-in-out both;
+  animation-delay: 9s;
+}
+
+/* backwards = stay at 0% keyframe during the 11 s delay (parked below view).
+   Climb starts during the Phase 1 fade; the ~3 s ascent from the parking
+   spot lands the first line in view ~1 s after Phase 1 is gone. */
 .sw-crawl-text {
   animation: sw-crawl 72s linear infinite backwards;
-  animation-delay: 4.5s;
+  animation-delay: 11s;
 }
 
 /* Top fade = text recedes into horizon. Bottom fade = text materialises from nothing. */
@@ -215,10 +254,20 @@
 
 /* ─── REDUCED MOTION ─── */
 @media (prefers-reduced-motion: reduce) {
-  .animate-pulse-dot,
   .animate-fade-up,
+  .animate-blink,
+  .sw-spidey-text,
+  .sw-gag-text,
   .sw-intro-text,
   .sw-crawl-text {
     animation: none;
+  }
+
+  /* Without animation the intro overlays would all render stacked on top of
+     the crawl — hide them and show the crawl text statically instead. */
+  .sw-spidey-text,
+  .sw-gag-text,
+  .sw-intro-text {
+    opacity: 0;
   }
 }

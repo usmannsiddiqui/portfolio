@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DM_Sans, Orbitron } from "next/font/google";
+import { DM_Sans, Press_Start_2P } from "next/font/google";
 import { SpringCursor } from "@/components/ui/spring-cursor";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 import "./globals.css";
@@ -9,10 +9,10 @@ const dmSans = DM_Sans({
   variable: "--font-dm-sans",
 });
 
-const orbitron = Orbitron({
+const pressStart = Press_Start_2P({
   subsets: ["latin"],
-  variable: "--font-orbitron",
-  weight: ["700", "900"],
+  weight: "400",
+  variable: "--font-press-start",
 });
 
 export const metadata: Metadata = {
@@ -27,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`${dmSans.variable} ${orbitron.variable} font-sans antialiased`}>
+      <body className={`${dmSans.variable} ${pressStart.variable} font-sans antialiased`}>
         <ScrollProgress />
         <SpringCursor />
         {children}

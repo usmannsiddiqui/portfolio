@@ -1,4 +1,5 @@
 import { experience } from "@/data/portfolio-data";
+import { SectionHeading } from "@/components/ui/section-heading";
 
 const FEATURED_ORGS = new Set([
   "Penn State IT Learning & Development",
@@ -7,16 +8,10 @@ const FEATURED_ORGS = new Set([
 
 export default function Experience() {
   return (
-    <section id="experience" className="py-24 border-t border-border/50">
-      <div className="grid grid-cols-1 md:grid-cols-[180px_1fr] gap-8 lg:gap-16">
+    <section id="experience" className="py-24">
+      <SectionHeading>Experience</SectionHeading>
 
-        {/* Sticky label */}
-        <div>
-          <h2 className="text-xs font-medium tracking-[0.2em] uppercase text-amber md:sticky md:top-20">
-            Experience
-          </h2>
-        </div>
-
+      <div className="mt-12">
         {/* Timeline */}
         <div className="relative flex flex-col gap-0">
           {/* Vertical line — amber fading to transparent */}

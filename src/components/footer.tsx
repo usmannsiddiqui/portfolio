@@ -1,11 +1,9 @@
-import { personal } from "@/data/portfolio-data";
-
 export default function Footer() {
   return (
     <footer className="border-t border-border/30 py-8 mt-4">
       <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-        <span className="text-xs text-muted-foreground/40 tracking-wide">
-          {personal.name}
+        <span className="font-pixel text-[10px] text-muted-foreground/40">
+          usman
         </span>
 
         {/* Easter egg — Yoda */}

@@ -1,88 +1,53 @@
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
+import { Github, Linkedin, Mail, FileText } from "lucide-react";
 import { personal } from "@/data/portfolio-data";
+
+const LINKS = [
+  { label: "GitHub", href: personal.github, icon: Github, external: true },
+  { label: "LinkedIn", href: personal.linkedin, icon: Linkedin, external: true },
+  { label: "Email", href: `mailto:${personal.email}`, icon: Mail, external: false },
+  { label: "Resume", href: personal.resume, icon: FileText, external: true },
+];
 
 export default function Hero() {
   return (
-    <section id="hero" className="min-h-[90vh] flex items-center py-24">
-      <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-12 lg:gap-20 items-center w-full">
+    <section
+      id="hero"
+      className="min-h-[90vh] flex flex-col items-center justify-center gap-7 py-24 text-center"
+    >
+      {/* Pixel greeting */}
+      <p className="font-pixel text-sm md:text-base text-foreground leading-relaxed">
+        hey, <span className="text-amber">i am</span>
+      </p>
 
-        {/* ── Text ── */}
-        <div className="flex flex-col gap-6 order-2 md:order-1">
+      {/* Name + blinking cursor */}
+      <h1 className="font-extrabold tracking-tight leading-[1.05] text-4xl md:text-6xl lg:text-7xl text-foreground">
+        {personal.name}
+        <span
+          aria-hidden="true"
+          className="animate-blink inline-block w-[0.5ch] h-[0.85em] ml-2 align-baseline translate-y-[0.12em] bg-amber"
+        />
+      </h1>
 
-          {/* Status pill */}
-          <div className="flex items-center gap-2.5 w-fit">
-            <span
-              aria-hidden="true"
-              className="animate-pulse-dot inline-block w-1.5 h-1.5 rounded-full bg-amber shrink-0"
-            />
-            <p className="text-xs font-medium tracking-[0.16em] uppercase text-muted-foreground">
-              Penn State University · Computer Science
-            </p>
-          </div>
+      {/* Headline */}
+      <p className="text-sm md:text-base text-muted-foreground tracking-wide">
+        {personal.headline}
+      </p>
 
-          {/* Name */}
-          <div>
-            <h1
-              className="font-black text-4xl md:text-5xl lg:text-[3.5rem] leading-[1.12] tracking-wide text-foreground uppercase"
-              style={{ fontFamily: "var(--font-orbitron)" }}
-            >
-              {personal.name}
-            </h1>
-            <p className="mt-3 text-base md:text-lg font-medium text-amber tracking-wide">
-              {personal.headline}
-            </p>
-          </div>
-
-          {/* Subheadline */}
-          <p className="text-sm md:text-base text-muted-foreground leading-relaxed max-w-lg">
-            {personal.subheadline}
-          </p>
-
-          {/* CTAs */}
-          <div className="flex gap-3 flex-wrap pt-1">
-            <Button
-              asChild
-              size="lg"
-              className="bg-foreground text-background font-semibold hover:bg-foreground/90 transition-colors duration-150"
-            >
-              <a href="#work">View My Work</a>
-            </Button>
-            <Button
-              asChild
-              variant="outline"
-              size="lg"
-              className="border-border hover:border-foreground/30 hover:bg-white/[0.04] transition-colors duration-150"
-            >
-              <a href={`mailto:${personal.email}`}>Contact Me</a>
-            </Button>
-            <Button
-              asChild
-              variant="ghost"
-              size="lg"
-              className="text-muted-foreground hover:text-foreground transition-colors duration-150"
-            >
-              <a href={personal.resume} target="_blank" rel="noopener noreferrer">
-                Resume ↗
-              </a>
-            </Button>
-          </div>
-        </div>
-
-        {/* ── Photo ── */}
-        <div className="flex justify-center md:justify-end order-1 md:order-2">
-          <div className="w-52 h-52 md:w-60 md:h-60 lg:w-64 lg:h-64 rounded-full overflow-hidden shadow-xl shadow-black/80">
-            <Image
-              src={personal.photo}
-              alt={personal.name}
-              width={256}
-              height={256}
-              className="object-cover w-full h-full grayscale"
-              priority
-            />
-          </div>
-        </div>
-
+      {/* Icon links */}
+      <div className="flex items-center gap-5 pt-2">
+        {LINKS.map(({ label, href, icon: Icon, external }) => (
+          <a
+            key={label}
+            href={href}
+            aria-label={label}
+            {...(external
+              ? { target: "_blank", rel: "noopener noreferrer" }
+              : {})}
+            className="text-muted-foreground hover:text-amber transition-all duration-150 hover:scale-110"
+          >
+            <Icon className="w-5 h-5" />
+          </a>
+        ))}
       </div>
     </section>
   );
