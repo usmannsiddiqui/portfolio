@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DM_Sans, Orbitron } from "next/font/google";
+import { DM_Sans, Orbitron, Press_Start_2P } from "next/font/google";
 import { SpringCursor } from "@/components/ui/spring-cursor";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 import "./globals.css";
@@ -15,6 +15,12 @@ const orbitron = Orbitron({
   weight: ["700", "900"],
 });
 
+const pressStart = Press_Start_2P({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-press-start",
+});
+
 export const metadata: Metadata = {
   title: "Muhammad Usman Siddiqui",
   description: "AI, Automation, and Technology Consultant · Penn State CS",
@@ -27,7 +33,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`${dmSans.variable} ${orbitron.variable} font-sans antialiased`}>
+      <body className={`${dmSans.variable} ${orbitron.variable} ${pressStart.variable} font-sans antialiased`}>
         <ScrollProgress />
         <SpringCursor />
         {children}
