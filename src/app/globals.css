@@ -175,14 +175,20 @@
 /* ─── STAR WARS EASTER EGG ─── */
 
 /*
-  Phase 0 (0–5 s): wrong-universe fake-out — Spider-Man opening line
+  The whole sequence is scroll-gated: every layer starts with
+  animation-play-state: paused (set inline by the component) and only runs
+  once the viewport scrolls into view — pausing freezes delays too, so the
+  clock starts at first sight.
+
+  Phase 0 (0–6 s): wrong-universe fake-out — Spider-Man opening line
   fades in, holds, fades out.
-  Phase 0.5 (5–8 s): "oop no! wrong universe" gag, pixel font.
-  Phase 1 (8–12 s): "A long time ago…" fades in, holds, fades fully out.
-  Phase 2 (delay 12.5 s): Crawl begins. Text is hidden below the container
-  during the delay (animation-fill-mode: backwards keeps it at the 0%
-  keyframe = translateY(550px), which is below the 460px-tall viewport).
-  7% keyframe hold = ~4 s invisible pause at bottom before each loop.
+  Phase 0.5 (6–9 s): "oop no! wrong universe" gag, pixel font.
+  Phase 1 (9–13 s): "A long time ago…" fades in, holds, fades fully out.
+  Phase 2 (delay 11 s): Crawl begins. Text is parked at translateY(700px),
+  fully below the masked viewport ("backwards" fill holds the 0% keyframe
+  during the delay). The climb starts under the Phase 1 fade and the text
+  enters view ~1 s after Phase 1 is gone. No hold keyframe: the climb from
+  the parking spot is the natural pause between loops.
   All intro phases share the sw-intro keyframes and play once ("both");
   only the crawl loops.
 */
@@ -195,36 +201,37 @@
 }
 
 @keyframes sw-crawl {
-  /* Start and hold completely below the overflow boundary.
-     700px (not 550) — with the 25° tilt + perspective, 550px still let the
-     first lines peek into the masked viewport during the long intro. */
+  /* Park fully below the overflow boundary — with the 25° tilt +
+     perspective, anything under ~700px still peeks into the masked
+     viewport (550 and 620 both ghosted "EPISODE IV" during the intro). */
   0%   { transform: rotateX(25deg) translateY(700px); }
-  7%   { transform: rotateX(25deg) translateY(700px); }
   /* Scroll all text past the top horizon */
   100% { transform: rotateX(25deg) translateY(-2800px); }
 }
 
 /* Phase 0 — Spider-Man fake-out */
 .sw-spidey-text {
-  animation: sw-intro 5s ease-in-out both;
+  animation: sw-intro 6s ease-in-out both;
 }
 
 /* Phase 0.5 — wrong-universe gag ("both" holds opacity 0 during the delay) */
 .sw-gag-text {
   animation: sw-intro 3s ease-in-out both;
-  animation-delay: 5s;
+  animation-delay: 6s;
 }
 
 /* Phase 1 — the proper Star Wars opener */
 .sw-intro-text {
   animation: sw-intro 4s ease-in-out both;
-  animation-delay: 8s;
+  animation-delay: 9s;
 }
 
-/* backwards = stay at 0% keyframe during 12.5 s delay (hidden below container) */
+/* backwards = stay at 0% keyframe during the 11 s delay (parked below view).
+   Climb starts during the Phase 1 fade; the ~3 s ascent from the parking
+   spot lands the first line in view ~1 s after Phase 1 is gone. */
 .sw-crawl-text {
   animation: sw-crawl 72s linear infinite backwards;
-  animation-delay: 12.5s;
+  animation-delay: 11s;
 }
 
 /* Top fade = text recedes into horizon. Bottom fade = text materialises from nothing. */
